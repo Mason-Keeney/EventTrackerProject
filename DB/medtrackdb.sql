@@ -89,8 +89,9 @@ SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
 -- -----------------------------------------------------
 START TRANSACTION;
 USE `medtrackdb`;
-INSERT INTO `medication` (`id`, `name`, `dosage`, `primary_use`, `secondary_use`, `use_frequency`) VALUES (1, 'Spironolactone', 50, 'Blood Pressure', 'Testosterone Supression', 'Once Daily');
-INSERT INTO `medication` (`id`, `name`, `dosage`, `primary_use`, `secondary_use`, `use_frequency`) VALUES (2, 'Estradiol', 2, 'balance estrogen', NULL, 'Twice Daily');
+INSERT INTO `medication` (`id`, `name`, `dosage`, `primary_use`, `secondary_use`, `use_frequency`) VALUES (1, 'Spironolactone', 50, 'Blood Pressure', '', 'Once Daily');
+INSERT INTO `medication` (`id`, `name`, `dosage`, `primary_use`, `secondary_use`, `use_frequency`) VALUES (2, 'Acetaminophen', 325, 'Pain Management', NULL, 'As Needed');
+INSERT INTO `medication` (`id`, `name`, `dosage`, `primary_use`, `secondary_use`, `use_frequency`) VALUES (3, 'Ibuprofen', 1200, 'Pain, Fever, Inflatmation', NULL, 'As Needed');
 
 COMMIT;
 
@@ -110,8 +111,13 @@ COMMIT;
 -- -----------------------------------------------------
 START TRANSACTION;
 USE `medtrackdb`;
-INSERT INTO `user_medication` (`id`, `medication_id`, `user_id`, `taken`, `date`) VALUES (1, 1, 1, 1, NULL);
-INSERT INTO `user_medication` (`id`, `medication_id`, `user_id`, `taken`, `date`) VALUES (2, 2, 1, 1, NULL);
+INSERT INTO `user_medication` (`id`, `medication_id`, `user_id`, `taken`, `date`) VALUES (1, 1, 1, 1, '2021-07-03');
+INSERT INTO `user_medication` (`id`, `medication_id`, `user_id`, `taken`, `date`) VALUES (2, 2, 1, 1, '2021-07-03');
+INSERT INTO `user_medication` (`id`, `medication_id`, `user_id`, `taken`, `date`) VALUES (3, 1, 1, 1, '2021-07-04');
+INSERT INTO `user_medication` (`id`, `medication_id`, `user_id`, `taken`, `date`) VALUES (4, 2, 1, 1, '2021-07-04');
+INSERT INTO `user_medication` (`id`, `medication_id`, `user_id`, `taken`, `date`) VALUES (5, 1, 1, 1, '2021-07-05');
+INSERT INTO `user_medication` (`id`, `medication_id`, `user_id`, `taken`, `date`) VALUES (6, 2, 1, 1, '2021-07-05');
+INSERT INTO `user_medication` (`id`, `medication_id`, `user_id`, `taken`, `date`) VALUES (7, 3, 1, 1, '2021-07-05');
 
 COMMIT;
 

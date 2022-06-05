@@ -7,9 +7,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -82,4 +84,35 @@ public class UserMedicationController {
 		}
 		return userMed;
 	}
+	
+	@PutMapping("usermedications/{id}")
+	public UserMedication updateUserMedication(@PathVariable Integer id, @RequestBody UserMedication userMed, HttpServletResponse res, HttpServletRequest req) {
+		try {
+			userMed = userMedServ.updateUserMedication(id, userMed);
+			if(userMed == null) {
+				res.setStatus(404);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			res.setStatus(400);
+		}
+		return userMed;
+	}
+	
+	@DeleteMapping("usermedications/{id}")
+	public void deleteUserMedication(@PathVariable Integer id, HttpServletResponse res) {
+		boolean deleted = false;
+		try {
+			deleted = userMedServ.deleteUserMedication(id);
+			if(deleted) {
+				res.setStatus(204);
+			} else {
+				res.setStatus(404);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			res.setStatus(400);
+		}
+	}
+	
 }

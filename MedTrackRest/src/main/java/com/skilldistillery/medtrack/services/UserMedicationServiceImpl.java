@@ -35,8 +35,8 @@ public class UserMedicationServiceImpl implements UserMedicationService {
 		Optional<User> op = userRepo.findById(userId);
 		if(op.isPresent()) {
 			User user = op.get();
-			if(user.getUsermeds() != null) {
-				userMeds = user.getUsermeds();
+			if(user.getUserMeds() != null) {
+				userMeds = user.getUserMeds();
 			}
 		}
 		return userMeds;
@@ -48,9 +48,10 @@ public class UserMedicationServiceImpl implements UserMedicationService {
 		Optional<UserMedication> op = userMedRepo.findById(id);
 		if(op.isPresent()) {
 			managed = op.get();
-			managed.setMedication(userMed.getMedication());
-			managed.setUser(userMed.getUser());
 			managed.setTaken(userMed.isTaken());
+			if(userMed.getDate() != null) {
+				managed.setDate(userMed.getDate());
+			}
 			managed = userMedRepo.saveAndFlush(managed);
 		}
 		return managed;

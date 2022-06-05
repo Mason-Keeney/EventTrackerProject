@@ -28,7 +28,7 @@ public class User {
 	private String password;
 	@OneToMany(mappedBy = "user")
 	@JsonIgnoreProperties("user")
-	private List<UserMedication> usermeds;
+	private List<UserMedication> userMeds;
 	@ManyToMany
 	@JoinTable(name = "user_medication", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "medication_id"))
 	private List<Medication> meds;
@@ -78,12 +78,12 @@ public class User {
 		this.password = password;
 	}
 
-	public List<UserMedication> getUsermeds() {
-		return usermeds;
+	public List<UserMedication> getUserMeds() {
+		return userMeds;
 	}
 
-	public void setUsermeds(List<UserMedication> usermeds) {
-		this.usermeds = usermeds;
+	public void setUserMeds(List<UserMedication> usermeds) {
+		this.userMeds = usermeds;
 	}
 
 	public List<Medication> getMeds() {
