@@ -14,7 +14,7 @@ MedTrack is an application designed to allow users to track their daily use of p
 <a href="#medication-routes"> Medication Routes </a> <br>
 <a href="#user-routes"> User Routes </a><br>
 <a href="#usermedication-routes"> UserMedication Routes</a> <br>
-<a href="#future-implemenations"> Future Implementations</a>
+<a href="#future-implementations"> Future Implementations</a>
 
 ## Technologies Used
 - JPA
