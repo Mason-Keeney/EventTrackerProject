@@ -2,6 +2,7 @@ package com.skilldistillery.medtrack.entities;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -31,7 +32,7 @@ public class User {
 	private List<UserMedication> userMeds;
 	@ManyToMany
 	@JoinTable(name = "user_medication", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "medication_id"))
-	private List<Medication> meds;
+	private Set<Medication> meds;
 	
 	
 	public User() {
@@ -86,11 +87,11 @@ public class User {
 		this.userMeds = usermeds;
 	}
 
-	public List<Medication> getMeds() {
+	public Set<Medication> getMeds() {
 		return meds;
 	}
 
-	public void setMeds(List<Medication> meds) {
+	public void setMeds(Set<Medication> meds) {
 		this.meds = meds;
 	}
 
