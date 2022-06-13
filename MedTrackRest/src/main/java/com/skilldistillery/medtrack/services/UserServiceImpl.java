@@ -63,8 +63,8 @@ public class UserServiceImpl implements UserService {
 			managed = op.get();
 			managed.setFirstName(user.getFirstName());
 			managed.setLastName(user.getLastName());
-			managed.setUserMeds(user.getUserMeds());
-			managed.setMeds(user.getMeds());
+//			managed.setUserMeds(user.getUserMeds());
+//			managed.setMeds(user.getMeds());
 			managed = userRepo.saveAndFlush(managed);
 		}
 		return managed;
