@@ -1,5 +1,6 @@
 package com.skilldistillery.medtrack.entities;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
@@ -80,7 +81,15 @@ public class User {
 	}
 
 	public List<UserMedication> getUserMeds() {
-		return userMeds;
+		List<UserMedication> sorted = new ArrayList<>();
+		if(userMeds != null) {
+			for (UserMedication userMedication : userMeds) {
+				if (userMedication.isTaken()) {
+					sorted.add(userMedication);
+				}
+			}
+		}
+		return sorted;
 	}
 
 	public void setUserMeds(List<UserMedication> usermeds) {

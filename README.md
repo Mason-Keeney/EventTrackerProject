@@ -27,6 +27,7 @@ MedTrack is an application designed to allow users to track their daily use of p
 - Git
 - GitHub
 - Gradle
+- JavaScript
 
 
 ## Expected Routes
@@ -68,4 +69,4 @@ MedTrack is an application designed to allow users to track their daily use of p
 
 ## Future Implementations
 
- Currently this project does not have a front-end implementation, but once it does a user will be able to log in, view what medications they are currently taking, track if they have been taking it consistently and add entries. Eventual implementations could see user roles such as *Doctor*, *Patient*, *Hospital Admin*, etc. which would allow patients to give real-time updates to their doctors on how a medication is affecting them, how consistently they are taking it, and allow doctors to easily track prescriptions for their patients and monitor dosage, as well as allowing Hospital Admins to track what medications are being commonly prescribed and their effectiveness (with sanitized user information, of course).
+ Building the front end of this application challenged me more than most of the projects have. Not just because learning JavaScript in a week is a challenge, but because I made sure to create a project that required more thought and effort than what was absolutely necessary. However, that challenge was definitely worth the extra time I had to take, understanding how these elements fit together and how to use DOM manipulation and DOM traversal to accomplish what I needed was very worthwhile. I currently have a front end built entirely on a single page that dynamically adds and removes elements as needed, with full CRUD cabilities on the USER entity, and CRUD where it was deemed necessary to have a functional program on the other entities. I will definitely be expanding on the capabilities of this webpage as we begin to learn and use Angular, and I am happy for the time I took to understand how these elements fit together. Learning this has definitely increased my understanding of the structure and syntax that goes into building a webpage.

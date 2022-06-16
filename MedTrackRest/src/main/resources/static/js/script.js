@@ -6,6 +6,7 @@ window.addEventListener("load", function(e){
 })
 var user = null;
 var messageDiv = null;
+var medicationList = null;
 
 function init(){
 	document.login.loginbtn.addEventListener('click', login)
@@ -92,7 +93,6 @@ function hideRegister(e){
 }
 
 function userHome(user){
-	console.log(user);
 	let loginForm = document.login;
 	for (let i = 0; i < loginForm.children.length; i++){
 		loginForm.children[i].hidden = true;	
@@ -104,9 +104,13 @@ function userHome(user){
 }
 
 function reloadLogin(){
+	let loginForm = document.login;
 	for (let i = 0; i < loginForm.children.length; i++){
 		loginForm.children[i].hidden = false;	
 	}
+	removeElements(document.getElementById("userDiv"));
+	removeElements(document.getElementById("userMedDiv"));
+	removeElements(document.getElementById("medicationDiv"));
 }
 
 
@@ -125,8 +129,13 @@ function displayMedications(user){
 	let medicationDisplay = document.getElementById("medicationDiv");
 	removeElements(medicationDisplay);
 	let medicationHeader = document.createElement('h3');
-	medicationHeader.textContent = "Currently Prescribed";
-	medicationDisplay.appendChild(medicationHeader);
+		medicationHeader.textContent = "Currently Prescribed";
+		medicationDisplay.appendChild(medicationHeader);
+	let addMedication = document.createElement("button");
+		addMedication.className = "btn btn-success";
+		addMedication.textContent = "Request New Medication";
+		addMedication.addEventListener("click", getThenDisplayMedications);
+		medicationDisplay.appendChild(addMedication);
 	if(user.meds != null){
 	for(let i = 0; i < user.meds.length; i++){
 		
@@ -137,7 +146,7 @@ function displayMedications(user){
 		let medDetails = document.createElement('ul');
 		
 		  let dosage = document.createElement('li');
-		    dosage.textContent = user.meds[i].dosage;
+		    dosage.textContent = user.meds[i].dosage +"mg";
 		    medDetails.appendChild(dosage);
 		
 		  let primaryUse = document.createElement('li');
@@ -155,6 +164,37 @@ function displayMedications(user){
 			medDetails.appendChild(useFrequency);
 	      medicationDisplay.appendChild(medDetails);
 	      
+	      let information = document.createElement('li');
+	      medDetails.appendChild(information);
+	      
+			let count = 0;
+			let date = new Date();
+			let y = date.getFullYear();
+			let m = date.getMonth() < 9 ? (date.getMonth() + 1) : 0 + "" + (date.getMonth() + 1);
+			let d = date.getDate();
+			let today = y + "-" + m + "-" + d;
+			for(let idx = 0; idx < user.userMeds.length; idx++){
+	      		if(user.meds[i].useFrequency === "Once Daily" || user.meds[i].useFrequency === "Twice Daily"){
+					if (user.meds[i].name === user.userMeds[idx].medication.name && user.userMeds[idx].date === today){
+						information.textContent = "Taken Once Today";
+						count++;
+					if (user.meds[i].useFrequency == "Twice Daily" && count == 2){
+						information.textContent = "Taken Twice Today";
+					}		
+					} else if (count === 0) {
+						information.textContent = "Not Taken Today";				
+		  		}
+		  		 } else {
+					if (user.meds[i].name === user.userMeds[idx].medication.name && user.userMeds[idx].date === today){
+						count++;
+						information.textContent = count + " dose(s) taken Today";
+					} else if (count === 0) {
+						information.textContent = "Not Taken Today";
+					}	
+				}
+			
+		}
+			      
 	      let addUserMedForm = document.createElement('form');
 	      
 	      let hiddenUserId = document.createElement('input')
@@ -189,7 +229,7 @@ function displayUserMedications(user){
 	let usermedsHeader = document.createElement('h3');
 	  usermedsHeader.textContent = "Daily Tracker"
 	
-	if(user.userMeds != null){
+	if(usermeds != null){
 	let medTable = document.createElement('table');
 	  medTable.className = "table";
 	let tableHead = document.createElement('thead');
@@ -232,6 +272,58 @@ function removeElements(div){
 	if(messageDiv.firstElementChild){
 		removeMessage();
 	}
+}
+
+
+function getThenDisplayMedications(){
+	let xhr = new XMLHttpRequest();
+	xhr.open('GET', `api/medications`)
+	xhr.onreadystatechange = function(){
+		if(xhr.readyState === 4){
+			if(xhr.status === 200){
+				medicationList = JSON.parse(xhr.responseText);
+				displayMedicationForm();
+			} else {
+				printMessage("Unable to populate Medication List")
+			}
+		}
+	}
+	xhr.send();
+}
+
+function displayMedicationForm(){
+	let userMedicationDiv = document.getElementById("userMedDiv")
+	removeElements(userMedicationDiv);
+	let medForm = document.createElement("form");
+		medForm.className = "form"
+		userMedicationDiv.appendChild(medForm);
+	let medSelect = document.createElement("select");
+		medSelect.name = "medId";
+		medSelect.className = "form-select";
+		medForm.appendChild(medSelect);
+	for(let i = 0; i < medicationList.length; i++){
+		let medOption = document.createElement("option")
+			medOption.textContent = medicationList[i].name;
+			medOption.value = medicationList[i].id;
+			medSelect.appendChild(medOption);
+	}
+	let back = document.createElement('input');
+		back.type = "submit";
+		back.value = "Back";
+		back.className = "btn btn-danger";
+		back.addEventListener("click", function(e){
+			e.preventDefault();
+			removeElements(userMedicationDiv);
+			displayUserMedications(user);
+		})
+		medForm.appendChild(back);
+	let medSubmit = document.createElement("input");
+		medSubmit.type = "submit";
+		medSubmit.value = "Request Medication";
+		medSubmit.className = "btn btn-success";
+		medSubmit.addEventListener("click", addNewMedication)
+		medForm.appendChild(medSubmit);
+	
 }
 
 // HOMEPAGE DISPLAY END
@@ -278,9 +370,8 @@ function createUserMed(userId, userMed){
 	xhr.onreadystatechange = function(){
 		if(xhr.readyState === 4){
 			if(xhr.status === 201 || xhr.status === 200){
-				let userMedication = JSON.parse(xhr.responseText);
-				user.userMeds.push(userMedication);
-				displayUserMedications(user);
+				user = findUser(user.id);
+
 			}
 			else {
 			printMessage("Unable to log medication")
@@ -291,6 +382,34 @@ function createUserMed(userId, userMed){
 	xhr.setRequestHeader("Content-type", "application/json");
 	xhr.send(JSON.stringify(userMed));
 }
+
+
+function addNewMedication(e){
+	e.preventDefault();
+	let medId = e.target.previousElementSibling.previousElementSibling.value;
+	startMedication(user.id, medId)
+}
+
+function startMedication(userId, medId){
+	let xhr = new XMLHttpRequest();
+	xhr.open('GET', `api/medications/${medId}`)
+	xhr.onreadystatechange = function(){
+		if(xhr.readyState === 4){
+			if(xhr.status === 200){
+				let med = JSON.parse(xhr.responseText);
+					let userMed = {
+		              medication: med,
+		              taken: false,
+	                }
+				createUserMed(userId, userMed);
+			} else{
+				printMessage("Unable to find medication");
+			}
+		}
+	}
+	xhr.send();
+}
+
 // USERMED MANIPULATION END
 
 
@@ -302,7 +421,9 @@ function findUser(id){
 	xhr.onreadystatechange = function(){
 		if(xhr.readyState === 4){
 			if(xhr.status === 200){
-				let user = JSON.parse(xhr.responseText);
+				user = JSON.parse(xhr.responseText);
+				displayUserMedications(user);
+				displayMedications(user);
 				return user;
 			} else {
 				return null;
@@ -431,7 +552,7 @@ function beginRegisterUser(e){
 	removeElements(document.getElementById('registerDiv'));
 }
 
-function registerUser(user){
+function registerUser(registerUser){
 	let xhr = new XMLHttpRequest();
 	xhr.open('POST', `api/users`);
 	xhr.setRequestHeader("Content-type", "application/json");
@@ -449,8 +570,7 @@ function registerUser(user){
 		} 
 	}
 	
-	console.log(user)
-	xhr.send(JSON.stringify(user));
+	xhr.send(JSON.stringify(registerUser));
 }
 
 // USER MANIPULATION END
@@ -459,6 +579,7 @@ function registerUser(user){
 
 // PRINT MESSAGE BEGIN
 function printMessage(message){
+	removeMessage();
 	let messageDisplay = document.createElement('h5');
 	messageDisplay.textContent = message;
 	messageDiv.appendChild(messageDisplay);
