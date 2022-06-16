@@ -170,10 +170,13 @@ function displayMedications(user){
 			let count = 0;
 			let date = new Date();
 			let y = date.getFullYear();
-			let m = date.getMonth() < 9 ? (date.getMonth() + 1) : 0 + "" + (date.getMonth() + 1);
+			let m = date.getMonth() > 9 ? (date.getMonth() + 1) : 0 + "" + (date.getMonth() + 1);
 			let d = date.getDate();
 			let today = y + "-" + m + "-" + d;
 			for(let idx = 0; idx < user.userMeds.length; idx++){
+				console.log(user.userMeds[idx].date)
+				console.log(today)
+				console.log(user.userMeds[idx].date === today)
 	      		if(user.meds[i].useFrequency === "Once Daily" || user.meds[i].useFrequency === "Twice Daily"){
 					if (user.meds[i].name === user.userMeds[idx].medication.name && user.userMeds[idx].date === today){
 						information.textContent = "Taken Once Today";
@@ -378,7 +381,6 @@ function createUserMed(userId, userMed){
 		}
 		} 
 	}
-	console.log(userMed)
 	xhr.setRequestHeader("Content-type", "application/json");
 	xhr.send(JSON.stringify(userMed));
 }
