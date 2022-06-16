@@ -174,9 +174,6 @@ function displayMedications(user){
 			let d = date.getDate();
 			let today = y + "-" + m + "-" + d;
 			for(let idx = 0; idx < user.userMeds.length; idx++){
-				console.log(user.userMeds[idx].date)
-				console.log(today)
-				console.log(user.userMeds[idx].date === today)
 	      		if(user.meds[i].useFrequency === "Once Daily" || user.meds[i].useFrequency === "Twice Daily"){
 					if (user.meds[i].name === user.userMeds[idx].medication.name && user.userMeds[idx].date === today){
 						information.textContent = "Taken Once Today";
