@@ -1,0 +1,87 @@
+
+<h1>MedTrack</h1>
+<hr>
+<div name="loginDiv"  *ngIf="!user" class="row">
+<div class="col-4">
+
+  <form>
+    <input type="text" placeholder="Username" name= "username" [(ngModel)]="username">
+    <input type="password" placeholder="Password" name= "password" [(ngModel)]="password"><br>
+    <button type="submit" class="btn btn-primary"(click)="loginUser()">Sign In</button>
+    <button type="submit" class="btn btn-primary"(click)="startRegisterUser()">Register</button>
+  </form>
+</div>
+<div class="col-4" name="emptyDiv"></div>
+<div *ngIf="register" class="col-4" name="registerDiv">
+  <form>
+    <label for="firstName"></label><input type="text" name="firstName" placeholder="First Name" [(ngModel)]="newUser.firstName">
+    <label for="lastName"></label><input type="text" name="lastName" placeholder="Last Name" [(ngModel)]="newUser.lastName">
+    <label for="username"></label><input type="text" name="username" placeholder="Username" [(ngModel)]="newUser.username">
+    <label for="password"></label><input type="password" name="password" placeholder="Password" [(ngModel)]="newUser.password"><br>
+    <button class="btn btn-success" (click)="registerUser()">Register</button>
+  </form>
+</div>
+
+</div>
+
+
+<div *ngIf="user" class="row">
+  <div class="col-3" name="userDiv">
+    <h1 (click)="editUser = user">{{user.firstName}} {{user.lastName}}</h1>
+    <div [ngClass]="hasTakenAllMeds(user) ? 'badge bg-success': 'badge bg-warning'">{{hasTakenAllMeds(user) ? "All Meds Taken" : "Missing Meds"}}</div>
+    <button class="btn btn-outline-warning" (click)="logout()">Log Out</button>
+    <form *ngIf="editUser">
+      <input type="text" name="firstName" [(ngModel)]="user.firstName">
+      <input type="text" name="lastName" [(ngModel)]="user.lastName">
+      <button class="btn btn-primary" (click)="updateUser(editUser)">Submit Changes</button>
+    </form>
+  </div>
+  <div class="col-6" name="userMedDiv" *ngIf="userMeds">
+    <table class="table table-striped" *ngIf="!showUserMed">
+      <thead>
+        <tr>
+          <th scope="col">Date</th>
+          <th scope="col">Medication</th>
+          <th scope="col">Dosage</th>
+          <th scope="col">Remove</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let userMed of userMeds">
+          <td>{{userMed.date}}</td>
+          <td (click)="showUserMed = userMed" class="link">{{userMed.medication.name}}</td>
+          <td>{{userMed.medication.dosage}}</td>
+          <td><button class="btn btn-danger" (click)="deleteUserMed(userMed.id)">X</button></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <form *ngIf="showUserMed">
+      <h4>{{showUserMed.medication.name}}</h4>
+      <input type="date" name="date" [(ngModel)]="showUserMed.date">
+      <button class="btn btn-outline-warning" (click)="showUserMed = null">Back</button>
+      <button class="btn btn-outline-primary" (click)="updateUserMed(showUserMed)">Complete Edit</button>
+    </form>
+  </div>
+  <div class="col-3" name="medDiv">
+
+    <button *ngIf="!getNewMed" class="btn btn-primary" (click)="getNewMed = true">Request Medication</button>
+    <div *ngIf="getNewMed">
+      <span *ngFor="let medication of medications">
+        <button value="medication.id" class="btn btn-success" (click)="createNewMedication(medication)">{{medication.name}}</button><br>
+      </span>
+    </div>
+      <div name="medDisplay" *ngFor="let med of user.meds"  >
+        <h4 [ngClass]="hasTakenRequired(med) ? 'taken': 'untaken'">{{med.name}}</h4>
+        <ul>
+          <li>{{med.primaryUse}}</li>
+          <li *ngIf="med.secondaryUse != null && med.secondaryUse != ''">{{med.secondaryUse}}</li>
+          <li>{{med.dosage}}</li>
+          <li>{{med.useFrequency}}</li>
+        </ul>
+        <button [ngClass]="hasTakenRequired(med) && med.useFrequency != 'As Needed' ? 'btn disabled': 'btn btn-success'" (click)="startLogUserMed(med)">Log</button>
+   </div>
+  </div>
+</div>
+
+

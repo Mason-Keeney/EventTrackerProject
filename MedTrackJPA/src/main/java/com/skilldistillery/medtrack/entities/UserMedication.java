@@ -11,6 +11,9 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
+
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Entity
@@ -21,6 +24,7 @@ public class UserMedication {
 	private int id;
 	@ManyToOne
 	@JoinColumn(name = "medication_id")
+	@LazyCollection(LazyCollectionOption.FALSE)
 	private Medication medication;
 	@ManyToOne
 	@JoinColumn(name = "user_id")

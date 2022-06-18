@@ -1,12 +1,14 @@
 package com.skilldistillery.medtrack.controllers;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -22,6 +24,7 @@ import com.skilldistillery.medtrack.services.UserService;
 
 @RestController
 @RequestMapping("api")
+@CrossOrigin({"*", "http://localhost"})
 public class UserMedicationController {
 
 	@Autowired
@@ -35,6 +38,7 @@ public class UserMedicationController {
 		List<UserMedication> userMeds = new ArrayList<>();
 		try {
 			userMeds = userMedServ.findByUserId(id);
+			Collections.sort(userMeds, (a, b) -> b.getDate().compareTo(a.getDate()));
 			if(userMeds.isEmpty()) {
 				res.setStatus(404);
 			}
@@ -63,7 +67,7 @@ public class UserMedicationController {
 	@PostMapping("users/{id}/usermedications")
 	public UserMedication createUserMedication(@PathVariable Integer id, @RequestBody UserMedication userMed, HttpServletResponse res, HttpServletRequest req) {
 		try {
-			userMed.setUser(userServ.show(id));
+				userMed.setUser(userServ.show(id));
 			if(userMed.getUser() != null) {
 				userMed = userMedServ.createUserMedication(userMed);
 				if(userMed != null) {

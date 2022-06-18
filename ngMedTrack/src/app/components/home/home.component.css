@@ -1,0 +1,21 @@
+.taken{
+  border-style: solid;
+  border-color: darkgreen;
+  border-width: 1px;
+  border-radius: 3%;
+}
+
+.untaken {
+  border-style: dashed;
+  border-color:crimson;
+  border-width: 1px;
+  border-radius: 3%;
+}
+
+button{
+  margin: 3px;
+}
+
+.link{
+  text-decoration: underline;
+}
