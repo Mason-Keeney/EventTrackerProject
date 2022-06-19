@@ -82,8 +82,12 @@ export class HomeComponent implements OnInit {
   }
 
   registerUser(){
+    this.newUser.meds = [];
+    this.newUser.userMeds = [];
     this.userService.create(this.newUser).subscribe({
       next: (createdUser) => {
+        console.log(createdUser);
+        this.loadMedications();
         this.user = createdUser;
         this.register = false;
       },
@@ -107,6 +111,19 @@ export class HomeComponent implements OnInit {
     })
 
   }
+
+  deleteUser(user: User){
+    this.userService.destroy(user.id).subscribe({
+      next: () => {
+        this.resetPage();
+      },
+      error: (problem) => {
+        console.log("HomeHttpComponent.deleteUser(): error deleting user.")
+        console.log(problem);
+      }
+    })
+  }
+
 
   loadUserMeds(){
     this.userMedService.index(this.user).subscribe({
@@ -204,16 +221,17 @@ export class HomeComponent implements OnInit {
       userMed = new UserMedication(0, med, this.today, false);
       this.getNewMed = false;
       if(this.user){
-        this.username = this.user.username;
-        this.password = this.user.password;
-        this.loginUser();
+;
       }
     }
     if(this.user)
       this.userMedService.create(this.user.id, userMed).subscribe({
       next: (createdUserMed) => {
         if(this.user?.userMeds){
-          this.loadUserMeds();
+          this.user.userMeds.push(createdUserMed);
+          this.username = this.user.username;
+          this.password = this.user.password;
+          this.loginUser()
         }
       },
       error: (problem) => {
@@ -222,11 +240,25 @@ export class HomeComponent implements OnInit {
     })
   }
 
+  resetPage(){
+    this.medications = [];
+    this.userMeds = null;
+    this.user = null;
+    this.newUser = new User();
+    this.editUser = null;
 
+    this.username = '';
+    this.password = '';
+    this.register = false;
+
+
+    this.showUserMed = null;
+    this.getNewMed = false;
+  }
 
 
   ngOnInit(): void {
-
+    this.loadMedications();
   }
 
 }

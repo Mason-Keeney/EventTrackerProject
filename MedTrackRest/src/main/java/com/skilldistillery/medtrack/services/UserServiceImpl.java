@@ -1,5 +1,7 @@
 package com.skilldistillery.medtrack.services;
 
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 
@@ -50,6 +52,8 @@ public class UserServiceImpl implements UserService {
 			}
 		}
 		if (user != null) {
+			user.setUserMeds(new ArrayList<>());
+			user.setMeds(new HashSet<>());
 			user = userRepo.saveAndFlush(user);
 		}
 		return user;

@@ -27,16 +27,17 @@
 
 <div *ngIf="user" class="row">
   <div class="col-3" name="userDiv">
-    <h1 (click)="editUser = user">{{user.firstName}} {{user.lastName}}</h1>
+    <h1 (click)="editUser = editUser ? null : user" class="textLink">{{user.firstName}} {{user.lastName}}</h1>
     <div [ngClass]="hasTakenAllMeds(user) ? 'badge bg-success': 'badge bg-warning'">{{hasTakenAllMeds(user) ? "All Meds Taken" : "Missing Meds"}}</div>
     <button class="btn btn-outline-warning" (click)="logout()">Log Out</button>
     <form *ngIf="editUser">
       <input type="text" name="firstName" [(ngModel)]="user.firstName">
       <input type="text" name="lastName" [(ngModel)]="user.lastName">
       <button class="btn btn-primary" (click)="updateUser(editUser)">Submit Changes</button>
+      <button class="btn btn-danger" (click)="deleteUser(editUser)">Delete Account</button>
     </form>
   </div>
-  <div class="col-6" name="userMedDiv" *ngIf="userMeds">
+  <div class="col-6" name="userMedDiv">
     <table class="table table-striped" *ngIf="!showUserMed">
       <thead>
         <tr>
