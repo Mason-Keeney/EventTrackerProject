@@ -28,6 +28,11 @@ MedTrack is an application designed to allow users to track their daily use of p
 - GitHub
 - Gradle
 - JavaScript
+- Angular
+- html
+- css
+- bootstrap
+- ngbootstrap
 
 
 ## Expected Routes
@@ -70,3 +75,7 @@ MedTrack is an application designed to allow users to track their daily use of p
 ## Future Implementations
 
  Building the front end of this application challenged me more than most of the projects have. Not just because learning JavaScript in a week is a challenge, but because I made sure to create a project that required more thought and effort than what was absolutely necessary. However, that challenge was definitely worth the extra time I had to take, understanding how these elements fit together and how to use DOM manipulation and DOM traversal to accomplish what I needed was very worthwhile. I currently have a front end built entirely on a single page that dynamically adds and removes elements as needed, with full CRUD cabilities on the USER entity, and CRUD where it was deemed necessary to have a functional program on the other entities. I will definitely be expanding on the capabilities of this webpage as we begin to learn and use Angular, and I am happy for the time I took to understand how these elements fit together. Learning this has definitely increased my understanding of the structure and syntax that goes into building a webpage.
+
+ ## Angular Upgrade
+
+ Rebuilding the front end of this application in Angular made the entire process much simpler. The ability to create an html element in the traditional layout and manipulate it more directly was far easier and faster to implement than relying on DOM Traversal and Manipulation at all times. There was a much more clear connection between the HTML element I wanted to manipulate and the code that was controlling it.
